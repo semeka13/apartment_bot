@@ -42,3 +42,15 @@ class User:
             return {"status": ex.args[0]}
         finally:
             conn.close()
+
+    def add_transport_time(self, transport, time):
+        try:
+            with sqlite3.connect(DBNAME) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO VALUES users (transport, arriving_time) VALUES (?, ?) WHERE tg_id = ?", (transport, time, self.tg_id,))
+                conn.commit()
+                return {"status": "ok"}
+        except Exception as ex:
+            return {"status": ex.args[0]}
+        finally:
+            conn.close()
