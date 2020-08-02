@@ -1,19 +1,26 @@
-import telebot
-from example import calendar_1
-from telebot.types import ReplyKeyboardRemove, CallbackQuery
-
-import config
-import telebot_calendar
+import logging
 import datetime
 
-TG_TOKEN = config.TG_TOKEN
-bot = telebot.TeleBot(TG_TOKEN)
+import telebot
+import telebot_calendar
+from telebot_calendar import CallbackData
+
+from telebot.types import ReplyKeyboardRemove, CallbackQuery
+
+API_TOKEN = "1165644015:AAFMXYgGRUbuEKCpHrdvPjlwIU5jSWIufWo"
+#logger = telebot.logger
+#telebot.logger.setLevel(logging.DEBUG)
+
+bot = telebot.TeleBot(API_TOKEN)
+
+# Creates a unique calendar
+calendar_1 = CallbackData("calendar_1", "action", "year", "month", "day")
+
 
 @bot.message_handler(commands=["start"])
 def check_other_messages(message):
     """
     Catches a message with the command "start" and sends the calendar
-
     :param message:
     :return:
     """
@@ -59,4 +66,6 @@ def callback_inline(call: CallbackQuery):
             reply_markup=ReplyKeyboardRemove(),
         )
         print(f"{calendar_1}: Cancellation")
-bot.polling()
+
+
+bot.polling(none_stop=True)

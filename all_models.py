@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 import config
 
@@ -43,11 +44,35 @@ class User:
         finally:
             conn.close()
 
-    def add_transport_time(self, transport, time):
+    def add_transport_time(self, transport, time: datetime.time):
         try:
             with sqlite3.connect(DBNAME) as conn:
                 cursor = conn.cursor()
                 cursor.execute("INSERT INTO VALUES users (transport, arriving_time) VALUES (?, ?) WHERE tg_id = ?", (transport, time, self.tg_id,))
+                conn.commit()
+                return {"status": "ok"}
+        except Exception as ex:
+            return {"status": ex.args[0]}
+        finally:
+            conn.close()
+
+    def add_start_and_end_time(self, start_time: datetime.time, end_time: datetime.time):
+        try:
+            with sqlite3.connect(DBNAME) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO VALUES users (start_time, end_time) VALUES (?, ?) WHERE tg_id = ?", (start_time, end_time, self.tg_id,))
+                conn.commit()
+                return {"status": "ok"}
+        except Exception as ex:
+            return {"status": ex.args[0]}
+        finally:
+            conn.close()
+
+    def add_preferences(self, preferences):
+        try:
+            with sqlite3.connect(DBNAME) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO VALUES users (preferences) VALUES (?) WHERE tg_id = ?", (preferences, self.tg_id,))
                 conn.commit()
                 return {"status": "ok"}
         except Exception as ex:
