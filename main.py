@@ -1,8 +1,14 @@
 from time import sleep
+import os
+from multiprocessing import Pool
 
-from telegram_bot import telegram_main
+processes = ('send_notifications.py', 'telegram_bot.py')
 
-telegram_main()
-while True:
-    print("ok")
-    sleep(30)
+
+def run_process(process):
+    os.system('python {}'.format(process))
+
+
+pool = Pool(processes=2)
+pool.map(run_process, processes)
+
